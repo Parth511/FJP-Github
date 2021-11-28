@@ -42,32 +42,30 @@
 import java.util.*;
 
 public class DistinctOccurence {
+
+    public static boolean unique(int[] arr){
+        int[] c = new int[2001];
+        for(int i:arr){
+            c[n+1000]++;
+        }
+
+        Arrays.sort(c);         //O(nlogn) step using merge/quick sort
+        for(int i=1; i<c.length; i++){
+            if(c[i]!=0 && c[i-1]!=0 && c[i]==c[i-1])
+                return false;
+        }
+        return true;
+    }
+
     public static void main(String[] args){
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int[] arr = new int[n];
         for(int i=0; i<n; i++)  arr[i] = sc.nextInt();
 
-        int[] freq = new int[n];
-
-        int count = 0;
-        for(int i=0; i<n; i++){
-            count = 0;
-            for(int j=0; j<n; j++){
-                if(arr[j] == arr[i])
-                    count++;
-            }freq[i] = count;
-        }
-
-        for(int i=0; i<n; i++){
-            for(int j=i+1; j<n; j++){
-                if(freq[j] == freq[i] && arr[i] != arr[j]){
-                    System.out.println("false");
-                    return;
-                }
-            }
-        }
-        System.out.println("true");
-        sc.close();
+        if(unique(arr))
+            System.out.println("true");
+        else
+            System.out.println("false");
     }
 }
