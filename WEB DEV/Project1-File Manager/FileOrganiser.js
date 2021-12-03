@@ -30,109 +30,28 @@
 
 const fs = require('fs')
 const path = require('path')
+const helpObj = require('./Commands/help')
+const treeObj = require('./Commands/tree')
+const organizeObj = require('./Commands/organize')
+
 
 let inputArr = process.argv.slice(2);
 // console.log(inputArr)
 
-let command = inputArr[0];   //<- first 2 are sliced, so command is at 0 array
+let command = inputArr[0];   //<- first 2 are sliced, so command is at 0 index at process array and path if applicable should be at 1 index of process array
 
-let types = {
-    media: ["mp4", "mkv","mp3"],
-    archives: ['zip', '7z', 'rar', 'tar', 'gz', 'ar', 'iso', "xz"],
-    documents: ['docx', 'doc', 'pdf', 'xlsx', 'xls', 'odt', 'ods', 'odp', 'odg', 'odf', 'txt', 'ps', 'tex'],
-    app: ['exe', 'dmg', 'msi', 'pkg', "deb"],
-    images: ['jpg','png']
-}
-
-
-switch(command){
+//Check for what operation the user has asked for in the process array
+switch (command) {
     case 'tree':
-        treeFn()
+        treeObj.treeFnKey(inputArr[1])
         break;
     case 'organize':
-        organizeFn(inputArr[1])
+        organizeObj.organizeFnKey(inputArr[1])
         break;
     case 'help':
-        helpFn()
+        helpObj.helpFnKey()
         break;
     default:
         console.log('Please enter a VALID command')
         break;
-}
-
-
-function treeFn(){
-    console.log('Tree Function Implemented')
-}
-
-function organizeFn(dirPath){
-    // 1. Input of a directory path
-
-    if(dirPath == undefined){
-        console.log('Please enter a Directory Path')
-        return;
-    }
-    else{
-        let doesExist = fs.existsSync(dirPath);
-        // 1. Check if path does exist
-        // console.log(doesExist)
-        if(doesExist){
-            // 2. Create an Organized files directory
-            destPath = path.join(dirPath, 'organized_files')
-            // C:\test_folder <-Original Path
-            // C:\test_folder\organized_files <-New Path
-            if(fs.existsSync(destPath) == false){
-                fs.mkdirSync(destPath)  //creates a new folder if one does not already exist
-            }
-            else{
-                console.log('The folder already exists')
-            }
-            organizeHelper(dirPath, destPath);
-        }
-        else{
-            console.log('Path does not exist')
-        }
-    }
-}
-
-function organizeHelper(src, dest){
-
-    let childNames = fs.readdirSync(src)
-    // console.log(childNames)
-
-    for(let i=0; i<childNames.length; i++){
-        let childAddress = path.join(src, childNames[i])
-        let isFile = fs.lstatSync(childAddress).isFile();
-
-        if(isFile){     //Arrange only entities that are files(isFile = true)
-            let fileCategory = getCategory(childNames[i])
-            console.log(childNames[i] + ' belongs to: ' + fileCategory)
-        }
-    }
-
-}
-
-function getCategory(Name){
-    let ext = path.extname(Name)
-
-    ext = ext.slice(1)  //Removes dot from first position by slicind and storing the remaining
-    // console.log(Name, ': ', ext)
-
-    for(let type in types){
-        let cTypeArr = types[type]      //Key value pairs gives values for corresponding keys
-
-        for(let i = 0; i<cTypeArr.length; i++){
-            if(ext == cTypeArr[i])
-                return type;
-        }
-    }
-}
-
-function helpFn(){
-    console.log(`List of all the commands -
-                 1) Tree commmand - node FO.js tree <dirName>
-                 2) Organise command - node FO.js organise <dirName>
-                 3) Help command - node FO.js help
-                  Here <dirName> is the name of the directory
-                  you want to run this script on.`)
 }
