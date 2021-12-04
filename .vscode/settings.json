@@ -5,5 +5,8 @@
         "Codes/Level 1/2d Arrays",
         "Codes",
         "Contest Solutions"
-    ]
+    ],
+    "files.associations": {
+        "xstring": "cpp"
+    }
 }
