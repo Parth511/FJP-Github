@@ -34,3 +34,4 @@ const fs = require('fs')
 //     console.log(""+data) // <-by default data is stored in data
 // }
 // console.log("After")
+// Asynchronous means the main thread does not stop in between.
