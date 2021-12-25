@@ -16,28 +16,32 @@ public class Solution {
      */
     public int minMeetingRooms(List<Interval> intervals) {
         // Write your code here
-        int n = intervals.size();
-        int[] startArr = new int[n], endArr = new int[n];
-        for(int i=0; i<n; i++){
-            startArr[i] = intervals.get(i).start;
-            endArr[i] = intervals.get(i).end;
+        ArrayList<Integer> start = new ArrayList<>();
+        ArrayList<Integer> end = new ArrayList<>();
+        for(int i=0; i<intervals.size(); i++){
+            start.add(intervals.get(i).start);
+            end.add(intervals.get(i).end);
         }
 
-        Arrays.sort(startArr);
-        Arrays.sort(endArr);
+        Collections.sort(start);
+        Collections.sort(end);
 
-        int i=0, j=0, Rooms = 0, maxRooms = 0;
-        while(i < n && j < n){
-            if(startArr[i] < endArr[j]){
-                Rooms++;
-                i++;
+        int currRooms = 0, maxRooms = 0;
+        int startIdx = 0, endIdx = 0;
+        while(startIdx < intervals.size()){
+            if(start.get(startIdx) < end.get(endIdx)){
+                currRooms++;
+                startIdx++;
+            }else if(start.get(startIdx) > end.get(endIdx)){
+                currRooms--;
+                endIdx++;
             }else{
-                Rooms--;
-                j++;
+                startIdx++;
+                endIdx++;
             }
-            maxRooms = Math.max(Rooms, maxRooms);
+            maxRooms = Math.max(maxRooms, currRooms);
         }
-        
+
         return maxRooms;
     }
 }
